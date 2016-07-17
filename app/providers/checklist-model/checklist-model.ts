@@ -1,41 +1,68 @@
-import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
+import { Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
+import {Observable} from 'rxjs/Observable';
 
 /*
-  Generated class for the ChecklistModel provider.
+  Generated class for the ChecklistPage page.
 
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
 */
-@Injectable()
+@Component({
+    templateUrl: 'build/pages/checklist/checklist.html',
+})
 export class ChecklistModel {
-  data: any;
 
-  constructor(private http: Http) {
-    this.data = null;
-  }
+    checklist: any;
+    checklistObserver: any;
 
-  load() {
-    if (this.data) {
-      // already loaded data
-      return Promise.resolve(this.data);
+    constructor(public title: string, public items: any[]) {
+        this.items = items;
+        this.checklist = Observable.create(observer => {
+            this.checklistObserver = observer;
+        });
     }
 
-    // don't have the data yet
-    return new Promise(resolve => {
-      // We're using Angular Http provider to request the data,
-      // then on the response it'll map the JSON data to a parsed JS object.
-      // Next we process the data and resolve the promise with the new data.
-      this.http.get('path/to/data.json')
-        .map(res => res.json())
-        .subscribe(data => {
-          // we've got back the raw data, now generate the core schedule data
-          // and save the data for later reference
-          this.data = data;
-          resolve(this.data);
+    addItem(item): void {
+        this.items.push({
+            title: item,
+            checked: false
         });
-    });
-  }
-}
+        this.checklistObserver.next(true);
+    }
 
+    removeItem(item): void {
+
+        let index = this.items.indexOf(item);
+        if (index > -1) {
+            this.items.splice(index, 1);
+        }
+        156
+        this.checklistObserver.next(true);
+
+    }
+
+    renameItem(item, title): void {
+
+        let index = this.items.indexOf(item);
+        if (index > -1) {
+            this.items[index].title = title;
+        }
+        this.checklistObserver.next(true);
+
+    }
+
+    setTitle(title): void {
+
+        this.title = title;
+        this.checklistObserver.next(true);
+
+    }
+
+    toggleItem(item): void {
+
+        item.checked = !item.checked;
+        this.checklistObserver.next(true);
+
+    }
+}
