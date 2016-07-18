@@ -94,6 +94,7 @@ export class HomePage {
     }
 
     save(): void {
+      this.dataService.save(this.checklists);
     }
 
 }

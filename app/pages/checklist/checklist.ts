@@ -1,19 +1,21 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-
-/*
-  Generated class for the ChecklistPage page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
+import {Component} from '@angular/core';
+import {NavController, NavParams, Alert} from 'ionic-angular';
 @Component({
-  templateUrl: 'build/pages/checklist/checklist.html',
+    templateUrl: 'build/pages/checklist/checklist.html'
 })
 export class ChecklistPage {
-
-  constructor(private nav: NavController) {
-
-  }
-
+    checklist: any;
+    constructor(public nav: NavController, public navParams: NavParams) {
+        this.checklist = this.navParams.get('checklist');
+    }
+    addItem(): void {
+    }
+    toggleItem(item): void {
+    }
+    removeItem(item): void {
+    }
+    renameItem(item): void {
+    }
+    uncheckItems(): void {
+    }
 }
