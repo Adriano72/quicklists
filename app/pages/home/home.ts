@@ -12,6 +12,22 @@ export class HomePage {
     checklists: ChecklistModel[] = [];
 
     constructor(public nav: NavController, public dataService: Data) {
+
+        this.dataService.getData().then((checklists) => {
+            let savedChecklists: any = false;
+            if (typeof (checklists) != "undefined") {
+                savedChecklists = JSON.parse(checklists);
+            }
+            if (savedChecklists) {
+                savedChecklists.forEach((savedChecklist) => {
+                    let loadChecklist = new ChecklistModel(savedChecklist.title,
+                        savedChecklist.items);
+                    this.checklists.push(loadChecklist); loadChecklist.checklist.subscribe(update => {
+                        this.save();
+                    });
+                });
+            }
+        });
     }
 
     addChecklist(): void {
@@ -94,7 +110,7 @@ export class HomePage {
     }
 
     save(): void {
-      this.dataService.save(this.checklists);
+        this.dataService.save(this.checklists);
     }
 
 }
